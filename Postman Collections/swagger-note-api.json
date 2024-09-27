@@ -1,0 +1,5084 @@
+{
+	"info": {
+		"_postman_id": "b45687b6-45f0-42ad-8e54-42cf4b572ef3",
+		"name": "Swagger Note API",
+		"description": "StartFragment\n\n## Notes API Documentation\n\nThis API allows you to manage notes and organize them according to different categories.\n\nStartFragment\n\n```\nBase URL: practice.expandtesting.com/notes/api \n\n ```\n\nEndFragmentStartFragment\n\nEndFragmentStartFragment\n\n## Features\n\n- Create notes with title and content.\n- Categorize notes into different categories.\n- Update and delete notes.\n- Search notes by title or category.\n    \n\nThis API is also utilized as a backend for the [Notes App available here]().\n\nEndFragment\n\nStartFragment\n\n## API Authorization Guide\n\nTo use this API, you must first have a valid account on the system and know your email and password. Once you have that information:\n\nLog in to the API using the **login endpoint**. This will provide you with an authentication token that you can use to access the protected resources.\n\nKeep the token safe, as you will need it for subsequent requests.\n\nTo authorize your requests, click the \"**Authorize**\" button on the top right corner of the Swagger UI interface. A dialog box will appear asking you to enter the authentication token.  \nEnter the token you obtained from the login endpoint and click \"**Authorize**\".\n\nYou are now authorized to use all the protected API endpoints.\n\nIf you need help using this API, check out our **video guide and demo**, which are available [here]()\n\nEndFragment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Check health",
+			"item": [
+				{
+					"name": "check health is up or not",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c177a976-60f4-4051-ae3b-ccbdd3c81c71",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have message 'Notes API is Running'\", function () {\r",
+									"    var responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Notes API is Running\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "9fa7e707-a627-4446-a70e-e626f7f6ce48",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{apiEndpoint}}/health-check",
+						"description": "Check Health (GET): This is a positive scenerio where a user tries to check the status of API whether it is up and running or not."
+					},
+					"response": []
+				}
+			],
+			"id": "107ab399-8ad4-4f50-9765-474ae709b29b",
+			"description": "This is a scenerio where a user tries to check the status of API whether it is up and running or not."
+		},
+		{
+			"name": "Register",
+			"item": [
+				{
+					"name": "register with GET request instead of POST",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4bfa07c1-2830-4334-baed-cb992ba42b1f",
+								"exec": [
+									"pm.test(\"Status code is 404\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(404);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Not Found'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Not Found\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "05dfca27-65df-4a19-a6ce-6f3505117d5e",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e7e083a7-4384-4c80-bf26-7018ca1d48a6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register",
+						"description": "Register (POST): This is a negative scenerio where a user tries to register account with GET request instead of POST."
+					},
+					"response": []
+				},
+				{
+					"name": "register with invalid api endpoint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5699ab60-f7dc-46af-be09-4e415e78add8",
+								"exec": [
+									"pm.test(\"Status code is 404\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(404);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Header Content-Type is text/html\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"text/html; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "88f25235-66af-4073-8a6c-327e4973580b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "a63431e1-c36d-430d-8d9a-aa30b8661f04",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register12345",
+						"description": "Register (POST): This is a negative scenerio where a user tries to register account with incorrect/invalid API endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "register with password below 6 characters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ebc0fc7-93da-46f9-b866-337d6537a4be",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Password must be between 6 and 30 characters'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Password must be between 6 and 30 characters\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5cfc25dd-d932-4a10-b168-50a5479a16da",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "28d003c4-52bc-4e06-a24a-51ba88108b76",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register",
+						"description": "Register (POST): This is a negative scenerio where a user tries to register account with password that is below 6 character."
+					},
+					"response": []
+				},
+				{
+					"name": "register with password above 30 characters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ebc0fc7-93da-46f9-b866-337d6537a4be",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Password must be between 6 and 30 characters'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Password must be between 6 and 30 characters\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5cfc25dd-d932-4a10-b168-50a5479a16da",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "af8bab9c-a9fb-4284-a862-b15b379efb66",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"This is p@ssword @bove thirty (30) char@cters\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register",
+						"description": "Register (POST): This is a negative scenerio where a user tries to register account with password that is above 30 characters."
+					},
+					"response": []
+				},
+				{
+					"name": "register with invalid email format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "215341f8-a56c-4fdc-baff-4fcf98349f29",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'A valid email address is required'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"A valid email address is required\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0f307e27-533e-4d52-9c73-029019e30c4f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "1f181694-c038-4bb6-b01e-9d7bf02e3c18",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"123@@zmail@@com\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register",
+						"description": "Register (POST): This is a negative scenerio where a user tries to register account with email id that is of invalid format."
+					},
+					"response": []
+				},
+				{
+					"name": "register with invalid email address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ebc0fc7-93da-46f9-b866-337d6537a4be",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have message 'A valid email address is required'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"A valid email address is required\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5cfc25dd-d932-4a10-b168-50a5479a16da",
+								"exec": [
+									"// Generate Random Email Address \r",
+									"let randomEmail = \"thisisfakeemailaddress@\" + Math.random().toString().substr(2, 5) + \"@gmail.com\";\r",
+									"pm.environment.set(\"invalidEmail\", randomEmail);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "b58e742e-dfa0-49c7-a15b-65a6592f7dee",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{invalidEmail}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register",
+						"description": "Register (POST): This is a negative scenerio where a user tries to register account with email that doesn't exist"
+					},
+					"response": []
+				},
+				{
+					"name": "register with empty name field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ebc0fc7-93da-46f9-b866-337d6537a4be",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have message 'Name field is manadatory cannot be left empty'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Name field is manadatory cannot be left empty\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5cfc25dd-d932-4a10-b168-50a5479a16da",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "fadbe833-1b6e-456d-adff-df9b740218a3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"email\": \"{{validEmail}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register",
+						"description": "Register (POST): This is a negative scenerio where a user tries to register account with empty name field which is madatory."
+					},
+					"response": []
+				},
+				{
+					"name": "register with empty email field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ebc0fc7-93da-46f9-b866-337d6537a4be",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have message 'Email field is mandatory'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Email field is mandatory\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5cfc25dd-d932-4a10-b168-50a5479a16da",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "eeb6f611-d0ea-42b9-9f6f-94e878b8fb80",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register",
+						"description": "Register (POST): This is a negative scenerio where a user tries to register account with empty email field which is madatory."
+					},
+					"response": []
+				},
+				{
+					"name": "register with empty password field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ebc0fc7-93da-46f9-b866-337d6537a4be",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have message 'Password field is mandatory'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Password field is mandatory\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5cfc25dd-d932-4a10-b168-50a5479a16da",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "ebf97f11-3754-43c7-9936-d45d92157539",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{validEmail}}\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register",
+						"description": "Register (POST): This is a negative scenerio where a user tries to register account with empty password field which is madatory."
+					},
+					"response": []
+				},
+				{
+					"name": "register with empty mandatory fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9edd961d-d8e4-4221-a307-d7d22f93a3e6",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Mandatory fields cannot be left empty'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Mandatory fields cannot be left empty\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c3dbc21f-85a9-40c6-9e50-092b9439b5b9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "be14c71a-6c1b-4adc-8ae3-bc120c711077",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"email\": \"\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register",
+						"description": "Register (POST): This is a negative scenerio where a user tries to register account with all mandatory fields left empty."
+					},
+					"response": []
+				},
+				{
+					"name": "register with valid email but weak password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ebc0fc7-93da-46f9-b866-337d6537a4be",
+								"exec": [
+									"pm.test(\"Status code is 201\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(201);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Password is weak'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Password is weak\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have name same as name stored on variable\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.environment.set('name', responseBody.data.name)\r",
+									"    let name = pm.environment.get(\"name\")\r",
+									"    pm.expect(responseBody.data.name).to.eql(name)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have email same as email stored on variable\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.environment.set('email', responseBody.data.email)\r",
+									"    let emailID = pm.environment.get(\"email\")\r",
+									"    pm.expect(responseBody.data.email).to.eql(emailID)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"// Schema Structure\r",
+									"const schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"status\": { \r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"message\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"data\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"email\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"name\",\r",
+									"        \"email\" \r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"status\",\r",
+									"    \"message\",\r",
+									"    \"data\"\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"// Schema Validation\r",
+									"pm.test(\"Scema Validation\", ()=> {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5cfc25dd-d932-4a10-b168-50a5479a16da",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "027ce6ce-e0ad-4fb5-bc37-dbb38c6336c5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{weakPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register",
+						"description": "Register (POST): This is a negative scenerio where a user tries to register account with password that is in between range but weak."
+					},
+					"response": []
+				},
+				{
+					"name": "register with valid email & strong password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ebc0fc7-93da-46f9-b866-337d6537a4be",
+								"exec": [
+									"pm.test(\"Status code is 201\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(201);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'User account created successfully'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"User account created successfully\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have name same as name stored on variable\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.environment.set('name', responseBody.data.name)\r",
+									"    let name = pm.environment.get(\"name\")\r",
+									"    pm.expect(responseBody.data.name).to.eql(name)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have email same as email stored on variable\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.environment.set('validEmail', responseBody.data.email)\r",
+									"    let emailID = pm.environment.get(\"validEmail\")\r",
+									"    pm.expect(responseBody.data.email).to.eql(emailID)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"// Schema Structure\r",
+									"const schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"status\": { \r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"message\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"data\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"email\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"name\",\r",
+									"        \"email\" \r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"status\",\r",
+									"    \"message\",\r",
+									"    \"data\"\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"// Schema Validation\r",
+									"pm.test(\"Scema Validation\", ()=> {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5cfc25dd-d932-4a10-b168-50a5479a16da",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "8019add0-38ed-4a4d-aa8d-202734790105",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{validEmail}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register",
+						"description": "Register (POST): This is a positive scenerio where a user tries to register account with strong password."
+					},
+					"response": []
+				},
+				{
+					"name": "register with already registered email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "911ea2c3-7927-4a4c-8772-7678e722dc19",
+								"exec": [
+									"pm.test(\"Status code is 409\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(409);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'An account already exists with the same email address'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"An account already exists with the same email address\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const schema = {\r",
+									"    \"type\" : \"object\",\r",
+									"    \"properties\" : {\r",
+									"        \"success\": {\r",
+									"            \"type\": \"boolean\"\r",
+									"        },\r",
+									"        \"status\": {\r",
+									"            \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"message\": {\r",
+									"            \"type\" : \"string\"\r",
+									"        },\r",
+									"        \"required\" : {\r",
+									"            \"type\" : \"array\",\r",
+									"            \"items\" : {\r",
+									"                \"type\" : \"string\"\r",
+									"            }\r",
+									"        }\r",
+									"     \r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Schema Validation\", ()=> {\r",
+									"    pm.response.to.have.jsonSchema(schema)\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6fe223ff-e0ea-422f-a0bb-b961d91fdcee",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "d64afb68-b915-460d-93b8-107cc75eacca",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"email\": \"{{validEmail}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/register",
+						"description": "Register (POST): This is a negative scenerio where a user tries to register account with alerady registered email address."
+					},
+					"response": []
+				}
+			],
+			"id": "69f8fc0b-8841-413c-9283-5b6eb7c8d0c0",
+			"description": "This is a scenerio where a user tries to create a new account on the server."
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "login with empty email field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "afd74919-e654-49e6-9f95-f3ccf7ec6ea4",
+								"exec": [
+									"// Removed redundant tests and fixed the error",
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.expect(pm.response.code).to.be.eql(400);",
+									"})",
+									"",
+									"pm.test(\"Response time is less than 1500ms\", function(){",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);",
+									"})",
+									"",
+									"pm.test('Response body is in JSON', function(){",
+									"    pm.response.to.be.json;",
+									"})",
+									"",
+									"pm.test(\"Response body have 'Email field is mandatory'\", function () {",
+									"    let responseBody = pm.response.json();",
+									"    pm.expect(responseBody.message).to.eql(\"Email field is mandatory\")",
+									"});",
+									"",
+									"pm.test(\"Header Content-Type is application/json\", function () {",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "438d1bca-769d-40ab-ae67-92eaadabe3b2",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "6fecba00-a270-4b4e-82bb-7c42485f7594",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/login",
+						"description": "Login (POST): This is a negative scenerio where a user tries to login with empty email address field."
+					},
+					"response": []
+				},
+				{
+					"name": "login with empty password field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "afd74919-e654-49e6-9f95-f3ccf7ec6ea4",
+								"exec": [
+									"// Removed redundant tests and fixed the error",
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.expect(pm.response.code).to.be.eql(400);",
+									"})",
+									"",
+									"pm.test(\"Response time is less than 1500ms\", function(){",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);",
+									"})",
+									"",
+									"pm.test('Response body is in JSON', function(){",
+									"    pm.response.to.be.json;",
+									"})",
+									"",
+									"pm.test(\"Response body have 'Password field is mandatory'\", function () {",
+									"    let responseBody = pm.response.json();",
+									"    pm.expect(responseBody.message).to.eql(\"Password field is mandatory\")",
+									"});",
+									"",
+									"pm.test(\"Header Content-Type is application/json\", function () {",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "438d1bca-769d-40ab-ae67-92eaadabe3b2",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "7d0a4b31-efb1-4af3-ad7a-91e50a406392",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{validEmail}}\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/login",
+						"description": "Login (POST): This is a negative scenerio where a user tries to login with empty password field."
+					},
+					"response": []
+				},
+				{
+					"name": "login with empty mandatory fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "afd74919-e654-49e6-9f95-f3ccf7ec6ea4",
+								"exec": [
+									"// Removed redundant tests and fixed the error",
+									"pm.test(\"Status code is 400\", function(){",
+									"    pm.expect(pm.response.code).to.be.eql(400);",
+									"})",
+									"",
+									"pm.test(\"Response time is less than 1500ms\", function(){",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);",
+									"})",
+									"",
+									"pm.test('Response body is in JSON', function(){",
+									"    pm.response.to.be.json;",
+									"})",
+									"",
+									"pm.test(\"Response body have message 'Mandatory fields cannot be left empty'\", function () {",
+									"    let responseBody = pm.response.json();",
+									"    pm.expect(responseBody.message).to.eql(\"Mandatory fields cannot be left empty\")",
+									"});",
+									"",
+									"pm.test(\"Header Content-Type is application/json\", function () {",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "438d1bca-769d-40ab-ae67-92eaadabe3b2",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "14c40c30-f598-4b8d-a188-bc3553dd5a87",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/login",
+						"description": "Login (POST): This is a negative scenerio where a user tries to login with empty mandatory fields."
+					},
+					"response": []
+				},
+				{
+					"name": "login with incorrect email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "68017e17-b498-4ade-8c78-d0e171a6ecfe",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Incorrect email address or password'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Incorrect email address or password\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "67fa7cc3-df3d-4d9d-80e3-45c2694db46f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/login",
+						"description": "Login (POST): This is a negative scenerio where a user tries to login with incorrect email."
+					},
+					"response": []
+				},
+				{
+					"name": "login with incorrect password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e27c9e60-24ac-4000-ad19-408a3535c998",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Incorrect email address or password'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Incorrect email address or password\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "80d98aa5-d4ad-4759-bcdf-2a47480de391",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{validEmail}}\",\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/login",
+						"description": "Login (POST): This is a negative scenerio where a user tries to login with incorrect password."
+					},
+					"response": []
+				},
+				{
+					"name": "login with both incorrect",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e27c9e60-24ac-4000-ad19-408a3535c998",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Incorrect email address or password'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Incorrect email address or password\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "f71f37d4-7a8a-4325-95f8-4d5916f7a1c0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/login",
+						"description": "Login (POST): This is a negative scenerio where a user tries to login with both incorrect."
+					},
+					"response": []
+				},
+				{
+					"name": "login with both valid credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "69e75cc7-a15a-407f-bd3a-4017de8e6056",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Resonse body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'login successful'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Login successful\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have 'token'\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Login have cookie\", function () {\r",
+									"    pm.expect(Object.keys(pm.cookies.toObject()).length).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"// store dynamic token value on environment variable with name 'tokenID'\r",
+									"const responseData = pm.response.json();\r",
+									"console.log(responseData.data.id)\r",
+									"pm.environment.set('token', responseData.data.token)\r",
+									"\r",
+									"// Schema Structure\r",
+									"const schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"status\": { \r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"message\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"data\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"email\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"token\": {\r",
+									"            \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"name\",\r",
+									"        \"email\",\r",
+									"        \"token\" \r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"status\",\r",
+									"    \"message\",\r",
+									"    \"data\"\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"// Schema Validation\r",
+									"pm.test(\"Scema Validation\", ()=> {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "886cab1e-9810-4d57-b002-57440453611a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{validEmail}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/login",
+						"description": "Login (POST): This is a positive scenerio where a user tries to login with correct credentials.\n\nWhen a user logs in successfully, the server generates a dynamic token as part of the response body. However, this token changes each time the user logs out and logs back in. To handle this scenario, I’ve written assertions in my test scripts. These assertions store the newly generated token in an environment variable named ‘tokenID’ every time the user logs in again."
+					},
+					"response": []
+				}
+			],
+			"id": "b1ea2e7e-c936-4ea8-9a24-fdf45d33bdae",
+			"description": "This is a scenerio where a user tries to login."
+		},
+		{
+			"name": "GET user profile",
+			"item": [
+				{
+					"name": "GET profile with POST request with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0612895e-8220-4235-bd1f-717a7ff2dd19",
+								"exec": [
+									"pm.test(\"Status code is 404\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(404);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Header Content-Type is text/html\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"text/html; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "d3f04563-33d8-4f9c-8a94-d67dc9f264b3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "{{tokenType}}",
+								"value": "{{tokenID}}",
+								"type": "text"
+							}
+						],
+						"url": "{{apiEndpoint}}/users/profile",
+						"description": "Fetch User Profile (GET) This is a negative scenerio where a user tries to fetch profile information like \\[email, name, id\\] after successful login using POST instead of GET."
+					},
+					"response": []
+				},
+				{
+					"name": "GET profile without auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0612895e-8220-4235-bd1f-717a7ff2dd19",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Access token is not valid or has expired, you will need to login'\", function () {\r",
+									"    const responseBody = pm.response.json()\r",
+									"    pm.expect(responseBody.message).to.eql(\"Access token is not valid or has expired, you will need to login\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is text/html\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "f04d197c-8c61-416a-b502-3bbde7039b4a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "{{tokenType}}",
+								"value": "{{tokenID}}",
+								"type": "text"
+							}
+						],
+						"url": "{{apiEndpoint}}/users/profile",
+						"description": "Fetch User Profile (GET) This is a negative scenerio where a user tries to fetch profile information like \\[email, name, id\\] after successful login using without Authentication Token."
+					},
+					"response": []
+				},
+				{
+					"name": "GET user profile correctly with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5229954b-1d94-42fc-a36b-423ea593a061",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'profile successful'\", function () {\r",
+									"    const responseBody = pm.response.json()\r",
+									"    pm.expect(responseBody.message).to.eql(\"Profile successful\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have name same as name stored on variable\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    let name = pm.environment.get(\"name\")\r",
+									"    pm.expect(responseBody.data.name).to.eql(name)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have email same as email stored on variable\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    let emailID = pm.environment.get(\"validEmail\")\r",
+									"    pm.expect(responseBody.data.email).to.eql(emailID)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"const schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"status\": { \r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"message\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"data\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"name\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"email\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\",\r",
+									"        \"name\",\r",
+									"        \"email\" \r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"status\",\r",
+									"    \"message\",\r",
+									"    \"data\"\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"// Schema Validation\r",
+									"pm.test(\"Scema Validation\", ()=> {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "a3edaa92-2af6-451b-a8d3-62fb46675f15",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "{{tokenType}}",
+								"value": "{{tokenID}}",
+								"type": "text"
+							}
+						],
+						"url": "{{apiEndpoint}}/users/profile",
+						"description": "Fetch User Profile (GET) This is a positive scenerio where a user tries to fetch profile information like \\[email, name, id\\] after successful login."
+					},
+					"response": []
+				}
+			],
+			"id": "0c30b8a0-dfd4-45ad-a170-adeb45f9f19b",
+			"description": "This is a scenerio where a user tries to fetch the profile information."
+		},
+		{
+			"name": "Update user profile",
+			"item": [
+				{
+					"name": "update user profile without mandatory field with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d15a0d74-30c4-486f-9e63-dd0d9014020d",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Mandatory fields shouldn't be empty'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Mandatory fields shouldn't be empty\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "2f7698d2-6cf0-45f1-8757-bf2f13b41231",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //mandatory field\r\n    \"name\" : \"\", \r\n\r\n    // optional fields\r\n    \"phone\": \"{{contact}}\",\r\n    \"company\": \"{{company}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/profile",
+						"description": "Update user profile (PATCH) This is a negative scenerio where a user tries to apply partial modifications to the profile but mandatory field is missing."
+					},
+					"response": []
+				},
+				{
+					"name": "update username below 3 character with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d15a0d74-30c4-486f-9e63-dd0d9014020d",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'User name must be between 4 and 30 characters'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"User name must be between 4 and 30 characters\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "88e2c424-27c4-411e-a12e-4e455d5823f4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"PM\",\r\n    \"phone\": \"{{contact}}\",\r\n    \"company\": \"{{company}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/profile",
+						"description": "Update user profile (PATCH) This is a negative scenerio where a user tries to update profile 'name' with 2 character, less than 4 which is required."
+					},
+					"response": []
+				},
+				{
+					"name": "update username above 30 character with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d15a0d74-30c4-486f-9e63-dd0d9014020d",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'User name must be between 4 and 30 characters'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"User name must be between 4 and 30 characters\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "61d7374f-85b4-4fde-9dd1-124af473badd",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"This is user name that is above thirty character\",\r\n    \"phone\": \"{{contact}}\",\r\n    \"company\": \"{{company}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/profile",
+						"description": "Update user profile (PATCH) This is a negative scenerio where a user tries to update profile 'name' with more than 30 characters."
+					},
+					"response": []
+				},
+				{
+					"name": "update user profile without auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bce06808-8e00-429d-bd0e-529061503c6f",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'No authentication token specified in x-auth-token header'\", function () {\r",
+									"    const responseBody = pm.response.json()\r",
+									"    pm.expect(responseBody.message).to.eql(\"No authentication token specified in x-auth-token header\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is text/html\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "fbcec681-7981-4f78-967b-ff249ed79f32",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{newName}}\",\r\n    \"phone\": \"{{contact}}\",\r\n    \"company\": \"{{company}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/profile",
+						"description": "Update user profile (PATCH) This is a positive scenerio where a user tries to apply partial modifications to the profile. In this case 'name' is mandatory whereas 'phone number' and 'company name' are optional."
+					},
+					"response": []
+				},
+				{
+					"name": "update user profile correctly with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bce06808-8e00-429d-bd0e-529061503c6f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Profile updated successful'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Profile updated successful\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property doesn't have old name\", function(){\r",
+									"    var responseBody = pm.response.json()\r",
+									"    let name = pm.environment.get(\"name\")\r",
+									"    pm.expect(responseBody.data).to.not.have.property(name);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data property have updated new name same as name stored on variable\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    let name = pm.environment.get(\"name\")\r",
+									"    let updatedName = pm.environment.get(\"newName\")\r",
+									"    pm.expect(responseBody.data.name).to.eq(updatedName)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have phone same as phone stored on variable\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    let contact = pm.environment.get(\"contact\")\r",
+									"    pm.expect(responseBody.data.phone).to.eql(contact)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have company name same as name stored on variable\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    let company = pm.environment.get(\"company\")\r",
+									"    pm.expect(responseBody.data.company).to.eql(company)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"const schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"success\": {\r",
+									"      \"type\": \"boolean\"\r",
+									"    },\r",
+									"    \"status\": { \r",
+									"      \"type\": \"integer\"\r",
+									"    },\r",
+									"    \"message\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"data\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"id\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"id\"\r",
+									"      ]\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"success\",\r",
+									"    \"status\",\r",
+									"    \"message\",\r",
+									"    \"data\"\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"// Schema Validation\r",
+									"pm.test(\"Scema Validation\", ()=> {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "c5c4488d-bd7b-4fd2-90fc-c8eb12c841fb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{newName}}\",\r\n    \"phone\": \"{{contact}}\",\r\n    \"company\": \"{{company}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/profile",
+						"description": "Update user profile (PATCH) This is a positive scenerio where a user tries to apply partial modifications to the profile. In this case 'name' is mandatory whereas 'phone number' and 'company name' are optional."
+					},
+					"response": []
+				}
+			],
+			"id": "f4074938-ac57-4ba4-8597-701d379dbd76",
+			"description": "This is a scenerio where a user tries to update his/her profile."
+		},
+		{
+			"name": "GET user profile after updating",
+			"item": [
+				{
+					"name": "GET user profile after updating profile with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "56e927c7-42a2-4533-ac1b-ec1a67ece56e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'profile successful'\", function () {\r",
+									"    const responseBody = pm.response.json()\r",
+									"    pm.expect(responseBody.message).to.eql(\"Profile successful\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property doesn't have old name\", function(){\r",
+									"    var responseBody = pm.response.json()\r",
+									"    let name = pm.environment.get(\"name\")\r",
+									"    pm.expect(responseBody.data).to.not.have.property(name);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data property have new name same as name stored on variable\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    let name = pm.environment.get(\"name\")\r",
+									"    let updatedName = pm.environment.get(\"newName\")\r",
+									"    pm.expect(responseBody.data.name).to.eq(updatedName)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "8d7f4728-583d-4f83-8bc6-f97566d36215",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "{{tokenType}}",
+								"value": "{{tokenID}}",
+								"type": "text"
+							}
+						],
+						"url": "{{apiEndpoint}}/users/profile",
+						"description": "Fetch User Profile (GET) This is a positive scenerio where a user tries to fetch new profile information after updating it."
+					},
+					"response": []
+				}
+			],
+			"id": "3cee4ffe-3fef-4b68-8235-51f0f33e3f04",
+			"description": "This is a scenerio where a user tries to fetch the profile after updating his/her profile."
+		},
+		{
+			"name": "Forget Password",
+			"item": [
+				{
+					"name": "send reset password link on unregistered email with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f4aea629-71e1-417a-8ce7-62a57887e357",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'No account found with the given email address'\", function () {\r",
+									"    const responseBody = pm.response.json()\r",
+									"    pm.expect(responseBody.message).to.eql(\"No account found with the given email address\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "b85ecbae-ee13-48e2-9679-9c64bfcacf61",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"invalidemailaddress@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/forgot-password",
+						"description": "Forget Password (POST): This is a negative scenerio where a user tries to send forget password link to an unregistered email to reset password."
+					},
+					"response": []
+				},
+				{
+					"name": "send reset password link on invalid email with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f4aea629-71e1-417a-8ce7-62a57887e357",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'A valid email address is required'\", function () {\r",
+									"    const responseBody = pm.response.json()\r",
+									"    pm.expect(responseBody.message).to.eql(\"A valid email address is required\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e04a3818-d331-4224-a4c9-fc4675effe95",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"@GMEAIL.COM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/forgot-password",
+						"description": "Forget Password (POST): This is a negative scenerio where a user tries to send forget password link to invalid email address."
+					},
+					"response": []
+				},
+				{
+					"name": "send reset password link on registered email with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb24330a-dc2e-4cac-9488-90ba2c111de9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Password reset link successfully sent to valid email\", function () {\r",
+									"    const responseBody = pm.response.json()\r",
+									"    let validEmailID = pm.environment.get(\"validEmail\")\r",
+									"    pm.expect(responseBody.message).to.eql(\"Password reset link successfully sent to \" + validEmailID + \". Please verify by clicking on the given link\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "55247ca7-02a2-4ba8-b9ff-e36e4ac20115",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"{{validEmail}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/forgot-password",
+						"description": "Forget Password (POST): This is a positive scenerio where a user tries to send forget password link to an registered email to reset password."
+					},
+					"response": []
+				}
+			],
+			"id": "4b73f42f-c58e-4894-aa68-80d71819fc49"
+		},
+		{
+			"name": "Change password",
+			"item": [
+				{
+					"name": "change password with same current password with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bc4d325f-5aa1-44e8-b971-e6525a4a864f",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'The new password should be different from the current password'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"The new password should be different from the current password\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "c9fa2742-41e3-4ab9-aad6-eb0833f8d002",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"{{password}}\",\r\n    \"newPassword\": \"{{password}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/change-password",
+						"description": "Change password (POST): This is a negative scenerio where a user tries to change the current password with same current password."
+					},
+					"response": []
+				},
+				{
+					"name": "change password i.e. below 6 characters with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5007998e-3a29-4fb0-8d8c-c9f38f753373",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'New password must be between 6 and 30 characters'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"New password must be between 6 and 30 characters\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "fe1a2584-c71e-4c34-b569-39bcb5cbdfff",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"{{password}}\",\r\n    \"newPassword\": \"Pr@be\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/change-password",
+						"description": "Change password (POST): This is a negative scenerio where a user tries to change the current password with password that is below 6 characters."
+					},
+					"response": []
+				},
+				{
+					"name": "change password i.e. above 30 characters with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5007998e-3a29-4fb0-8d8c-c9f38f753373",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'New password must be between 6 and 30 characters'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"New password must be between 6 and 30 characters\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "3c75b9fb-4e63-40f2-889c-e4b08608d78b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"{{password}}\",\r\n    \"newPassword\": \"This-Is-P@$$word-@bove-Thirty-Ch@r@cters\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/change-password",
+						"description": "Change password (POST): This is a negative scenerio where a user tries to change the current password with password that is above 30 characters."
+					},
+					"response": []
+				},
+				{
+					"name": "change password where old password is incorrect with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5007998e-3a29-4fb0-8d8c-c9f38f753373",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'The current password is incorrect'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"The current password is incorrect\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "af469d48-13fe-4dc6-86c4-c554be81e222",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"IncorrectCurrentPassword\",\r\n    \"newPassword\": \"{{newPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/change-password",
+						"description": "Change password (POST): This is a neagtive scenerio where a user tries to change password but current password is incorrect."
+					},
+					"response": []
+				},
+				{
+					"name": "change password to weak one with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5007998e-3a29-4fb0-8d8c-c9f38f753373",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'Password is weak'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Password must contain 1 uppercase, 1 lowercase, 1 number, and 1 special character with more than 6 characters\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "a3356f53-3189-4dba-8471-8211ba348569",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"{{password}}\",\r\n    \"newPassword\": \"{{weakPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/change-password",
+						"description": "Change password (POST): This is a neagtive scenerio where a user tries to change the current password with weak password."
+					},
+					"response": []
+				},
+				{
+					"name": "change password to strong password with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5007998e-3a29-4fb0-8d8c-c9f38f753373",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'The password was successfully updated'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"The password was successfully updated\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "20bba3f9-36c6-4907-bd76-9d36b4133de2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"{{weakPassword}}\",\r\n    \"newPassword\": \"{{newPassword}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/change-password",
+						"description": "Change password (POST) This is a positive scenerio where a user tries to change the current password with storng password"
+					},
+					"response": []
+				}
+			],
+			"id": "022030d4-a970-45b7-bbec-2100c1d31fb2",
+			"description": "This is a scenerio where a user tries to change current password."
+		},
+		{
+			"name": "Logout",
+			"item": [
+				{
+					"name": "logout with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f998f95d-55a8-4100-abe9-ba03459f0e38",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'User has been successfully logged out'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"User has been successfully logged out\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "99d25b52-2399-4942-a17d-07b35f31fcdf",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{apiEndpoint}}/users/logout",
+						"description": "Logout (DEL): This is a positive scenerio where a user tries to log out of current session."
+					},
+					"response": []
+				},
+				{
+					"name": "logout twice with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f998f95d-55a8-4100-abe9-ba03459f0e38",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'Access token is not valid or has expired, you will need to login'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Access token is not valid or has expired, you will need to login\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "18cab73a-8d20-4569-9176-fba6ed649857",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{apiEndpoint}}/users/logout",
+						"description": "Logout (DEL): This is a negative scenerio where a user tries to log out of current session again after successful logout."
+					},
+					"response": []
+				}
+			],
+			"id": "cd0d1c03-a427-4449-b14c-f674cc1d540d",
+			"description": "This is a scenerio where a user tries to logout of a current session."
+		},
+		{
+			"name": "Login with old password",
+			"item": [
+				{
+					"name": "login via. old password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b94e05c2-3aab-4f9e-a753-cfd10afaee62",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Incorrect email address or password'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Incorrect email address or password\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "6ac68bea-150b-47d5-9ca2-d22655469e2e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{validEmail}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/login",
+						"description": "Login with old password (POST) This is a negative scenerio where a user tries to log in with old password."
+					},
+					"response": []
+				}
+			],
+			"id": "608e90d2-671a-473c-b982-68df7751fd92",
+			"description": "This is a scenerio where a user tries to login with old password."
+		},
+		{
+			"name": "Login with new password",
+			"item": [
+				{
+					"name": "login via. new password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "835c60b1-0cf3-48a2-8713-c98148455309",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'login successful'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Login successful\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have 'token'\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"token\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Login have cookie\", function () {\r",
+									"    pm.expect(Object.keys(pm.cookies.toObject()).length).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"// store dynamic token value on environment variable with name 'tokenID'\r",
+									"const responseData = pm.response.json();\r",
+									"console.log(responseData.data.id)\r",
+									"pm.environment.set('token', responseData.data.token)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "0a479480-f524-44ac-8bcd-c7f504a46013",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{validEmail}}\",\r\n    \"password\": \"{{newPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/login",
+						"description": "Login with new password (POST) This is a positive scenerio where a user tries to log in with new password."
+					},
+					"response": []
+				}
+			],
+			"id": "ecbed057-d55b-4b5a-91a0-2acf1d1ba002",
+			"description": "This is a scenerio where a user tries to login with new password."
+		},
+		{
+			"name": "Create note",
+			"item": [
+				{
+					"name": "create note without auth token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c7724fa1-c5ae-4789-8cb1-81800036c2d5",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'No authentication token specified in x-auth-token header'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"No authentication token specified in x-auth-token header\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "74e0ac9f-0112-404a-86f9-57bc3e1a8bde",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{noteName}}\",\r\n    \"description\": \"{{noteDescription}}\",\r\n    \"category\": \"{{noteCategory}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/notes",
+						"description": "Create note without auth (POST): This is a negative scenerio where a user tries to create note without authentication token."
+					},
+					"response": []
+				},
+				{
+					"name": "create note without mandatory fields with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4d82611c-2eea-40cb-aa07-969946e4e97f",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data property have message 'Mandatory fields cannot be left empty'\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Mandatory fields cannot be left empty\")\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e6f47fea-7462-4c35-94cc-20643b8aa3b8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"\",\r\n    \"description\": \"\",\r\n    \"category\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/notes",
+						"description": "Create note without auth (POST): This is a negative scenerio where a user tries to create note without entering mandatory fields."
+					},
+					"response": []
+				},
+				{
+					"name": "create note with title below 4 characters with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c882513a-48b8-48f3-b945-46159f1692ee",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data property have message 'Title must be between 4 and 100 characters'\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Title must be between 4 and 100 characters\")\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "f395d8ae-5798-4d75-b1a0-c4144041189f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Abc\",\r\n    \"description\": \"{{noteDescription}}\",\r\n    \"category\": \"{{noteCategory}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/notes",
+						"description": "Create note without auth (POST): This is a negative scenerio where a user tries to create note with 'note title' that is below 4 characters."
+					},
+					"response": []
+				},
+				{
+					"name": "create note with title i.e. above 100 character with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c882513a-48b8-48f3-b945-46159f1692ee",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data property have message 'Title must be between 4 and 100 characters'\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Title must be between 4 and 100 characters\")\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e8aead84-bd34-4fbb-9ea9-cfdfd482a3fd",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"This is a note with title that is above hundred characters to check whether it will create note for us or not.\",\r\n    \"description\": \"{{noteDescription}}\",\r\n    \"category\": \"{{noteCategory}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/notes",
+						"description": "Create note without auth (POST): This is a negative scenerio where a user tries to create note with 'note title' that is below above 100 characters."
+					},
+					"response": []
+				},
+				{
+					"name": "create note with invalid auth token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "38a3794b-0e9e-4df4-9a66-38f38cb1ddc6",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'Access token is not valid or has expired, you will need to login'\", function () {\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.message).to.eql(\"Access token is not valid or has expired, you will need to login\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "31228873-3277-4f85-8a06-f5b0236e85d2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "1HG788Hg6H7B6",
+								"key": "{{tokenType}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{noteName}}\",\r\n    \"description\": \"{{noteDescription}}\",\r\n    \"category\": \"{{noteCategory}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/notes",
+						"description": "Create note with auth (POST): This is a negative scenerio where a user tries to create note with invalid auth token."
+					},
+					"response": []
+				},
+				{
+					"name": "create multiple note with auth at once in list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "38a3794b-0e9e-4df4-9a66-38f38cb1ddc6",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'API does not support the creation of multiple notes in a single request'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"API does not support the creation of multiple notes in a single request. Please create each note individually\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "cdd652ea-bdf5-4512-a548-2042af602588",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"title\": \"{{noteNameNepali}}\",\r\n        \"description\": \"{{noteDescriptionNepali}}\",\r\n        \"category\": \"{{noteCategory}}\"\r\n    }, \r\n    {\r\n        \"title\": \"{{noteName}}\",\r\n        \"description\": \"{{noteDescription}}\",\r\n        \"category\": \"{{noteCategory}}\"\r\n    }\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/notes",
+						"description": "Create note with auth (POST): This is a negative scenerio where a user tries to create multiple notes at once."
+					},
+					"response": []
+				},
+				{
+					"name": "create note with auth with different language",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "38a3794b-0e9e-4df4-9a66-38f38cb1ddc6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have note title same as title stored on variable\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    let noteTitle = pm.environment.get(\"noteNameNepali\")\r",
+									"    pm.expect(responseBody.data.title).to.eql(noteTitle)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body have note description same as description stored on variable\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    let noteDescription = pm.environment.get(\"noteDescriptionNepali\")\r",
+									"    pm.expect(responseBody.data.description).to.eql(noteDescription)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body have note category same as category stored on variable\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    let noteCategory = pm.environment.get(\"noteCategory\")\r",
+									"    pm.expect(responseBody.data.category).to.eql(noteCategory)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"// Store id from response as note_id variable\r",
+									"const responseData = pm.response.json();\r",
+									"console.log(responseData.data.id)\r",
+									"pm.environment.set('noteID', responseData.data.id)\r",
+									"console.log(responseData.data.id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "4cfe6839-38f3-4f52-8592-51ce87967cf3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{noteNameNepali}}\",\r\n    \"description\": \"{{noteDescriptionNepali}}\",\r\n    \"category\": \"{{noteCategory}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/notes",
+						"description": "Create note with auth (POST): This is a positive scenerio where a user tries to create note with different language beside english with proper authentication and requirements"
+					},
+					"response": []
+				},
+				{
+					"name": "create note with auth with English language",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "38a3794b-0e9e-4df4-9a66-38f38cb1ddc6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have note title same as title stored on variable\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    let noteTitle = pm.environment.get(\"noteName\")\r",
+									"    pm.expect(responseBody.data.title).to.eql(noteTitle)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body have note description same as description stored on variable\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    let noteDescription = pm.environment.get(\"noteDescription\")\r",
+									"    pm.expect(responseBody.data.description).to.eql(noteDescription)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body have note category same as category stored on variable\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    let noteCategory = pm.environment.get(\"noteCategory\")\r",
+									"    pm.expect(responseBody.data.category).to.eql(noteCategory)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"// Store id from response as note_id variable\r",
+									"const responseData = pm.response.json();\r",
+									"console.log(responseData.data.id)\r",
+									"pm.environment.set('noteID', responseData.data.id)\r",
+									"console.log(responseData.data.id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "397ed02b-ac8e-4a20-ab93-866d54484b77",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{noteName}}\",\r\n    \"description\": \"{{noteDescription}}\",\r\n    \"category\": \"{{noteCategory}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/notes",
+						"description": "Create note with auth (POST): This is a positive scenerio where a user tries to create note with english language with proper authentication and requirements"
+					},
+					"response": []
+				}
+			],
+			"id": "bfe7c249-c602-4c24-8195-15bf27dd077f",
+			"description": "This is a scenerio where a user tries to create a note on the server."
+		},
+		{
+			"name": "GET all notes",
+			"item": [
+				{
+					"name": "GET all notes without auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9a7b0343-0548-43f1-90e3-a7886a9b73d9",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'No authentication token specified in x-auth-token header'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"No authentication token specified in x-auth-token header\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "01b7ed14-011e-4901-89dd-a8ee5ff3cedf",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": "{{apiEndpoint}}/notes",
+						"description": "Fetch all notes without auth (GET): This is a negative scenerio where a user tries to fetch all the notes that was created without authetication."
+					},
+					"response": []
+				},
+				{
+					"name": "GET all notes with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26cb463d-8d05-4e85-ba48-e74c412bf24a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data property have 'title'\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"title\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "eef1c57b-4d7a-40c5-91cb-624146a9aa82",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": "{{apiEndpoint}}/notes",
+						"description": "Fetch all notes with auth (GET): This is a positive scenerio where a user tries to fetch all the notes that was created with proper authetication."
+					},
+					"response": []
+				}
+			],
+			"id": "44af6e33-8b21-4a9e-a56a-ba28657fa7e6",
+			"description": "This is a scenerio where a user tries to fetch all the notes from the server."
+		},
+		{
+			"name": "GET note by id",
+			"item": [
+				{
+					"name": "GET note by id without auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c1e124f6-560d-4981-894c-19915b3c0e56",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'No authentication token specified in x-auth-token header'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"No authentication token specified in x-auth-token header\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "ae0d9016-9db8-4691-9de5-2d222c364c87",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Fetch note by id without auth (GET): This is a negative scenerio where a user tries to get note by id without authentication. Here i set 'note id' as Path Variables instead of passing it directly on URL."
+					},
+					"response": []
+				},
+				{
+					"name": "GET note by invalid id with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a9c51d5e-ae4b-4908-80e2-c5ab89b2eea8",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Note ID must be a valid ID'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Note ID must be a valid ID\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "8e6d5709-bc54-491a-9761-d17b8c159098",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "$#"
+								}
+							]
+						},
+						"description": "Fetch note by id with incorrect auth (GET): This is a negative scenerio where a user tries to get note by id by passing correct note id with invalid authentication key."
+					},
+					"response": []
+				},
+				{
+					"name": "GET note by id with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c9896055-f309-47dc-911f-bf2f6a011fb0",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data property have 'note id'\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have 'title'\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"title\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have 'description'\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"description\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have 'category'\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"category\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "91e21159-d572-4cf0-aa1d-0b239dbdf300",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Fetch note by with auth and correct note id (GET) This is a positive scenerio where a user tries to get note by id with proper authentication and with correct note id."
+					},
+					"response": []
+				}
+			],
+			"id": "b5026185-7477-4116-92a2-6c76f0741d53",
+			"description": "This is a scenerio where a user tries to fetch the specific note by id."
+		},
+		{
+			"name": "Update note by id",
+			"item": [
+				{
+					"name": "update note by id without auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9b98ccfe-b3c0-4bc2-b490-bf03e8ce4c8b",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have message 'No authentication token specified in x-auth-token headerl'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"No authentication token specified in x-auth-token header\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "d507ad62-626c-43a9-9113-6bcb06d936ef",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{noteID}}\",\r\n    \"title\": \"{{noteName1}}\",\r\n    \"description\": \"{{noteDescription1}}\",\r\n    \"category\": \"Work\",\r\n    \"completed\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Update entire note by id (PUT): This is a negative scenerio where a user tries to replace the entire resource with the new data without proper authentication."
+					},
+					"response": []
+				},
+				{
+					"name": "update note by id with empty payload body with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9b98ccfe-b3c0-4bc2-b490-bf03e8ce4c8b",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have message 'Mandatory fields shouldn't be empty'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Mandatory fields shouldn't be empty\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "67ce187a-766c-4917-bfe4-58a6e2e5b587",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"\",\r\n    \"title\": \"\",\r\n    \"description\": \"\",\r\n    \"completed\": \"\",\r\n    \"category\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Update entire note by id (PUT): This is a negative scenerio where a user tries to replace the entire resource with empty payload body."
+					},
+					"response": []
+				},
+				{
+					"name": "update note by id with incorrect id with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9b98ccfe-b3c0-4bc2-b490-bf03e8ce4c8b",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have message 'Note ID must be a valid ID'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Note ID must be a valid ID\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "d9eddefd-2c42-487b-a49d-10a1e9ffccf4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{noteName1}}\",\r\n    \"description\": \"{{noteDescription1}}\",\r\n    \"category\": \"Work\",\r\n    \"completed\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "123"
+								}
+							]
+						},
+						"description": "Update entire note by id (PUT): This is a negative scenerio where a user tries to replace the entire resource with the new data with proper authentication but incorrect note id."
+					},
+					"response": []
+				},
+				{
+					"name": "update note by id with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9b98ccfe-b3c0-4bc2-b490-bf03e8ce4c8b",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have note title same as title stored on variable\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    let noteTitle1 = pm.environment.get(\"noteName1\")\r",
+									"    pm.expect(responseBody.data.title).to.eql(noteTitle1)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body have note description same as description stored on variable\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    let noteDescription1 = pm.environment.get(\"noteDescription1\")\r",
+									"    pm.expect(responseBody.data.description).to.eql(noteDescription1)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have category 'Work'\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.data.category).to.eql(\"Work\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have completed status 'true'\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.data.completed).to.eql(true)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e4b15b48-d23d-4a25-9f1d-cb9818a99a7f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{noteName1}}\",\r\n    \"description\": \"{{noteDescription1}}\",\r\n    \"category\": \"Work\",\r\n    \"completed\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Update entire note by id (PUT) This is a positive scenerio where a user tries to replace the entire resource with the new data.\n\nHere i changed note title, description, category and completed status."
+					},
+					"response": []
+				}
+			],
+			"id": "42b8d7a4-300e-4117-8969-1e83c9405c33",
+			"description": "This is a scenerio where a user tries to update the specifc note by id."
+		},
+		{
+			"name": "GET note by id after updating note",
+			"item": [
+				{
+					"name": "GET note by id with auth after update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "766798ec-ade0-478a-87a8-36082e5e2677",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data property must exist and must not be empty\", function(){\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.data).to.exist.and.not.to.be.empty;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data property have category 'Work'\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.data.category).to.eql(\"Work\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data property have completed status 'true'\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.data.completed).to.eql(true)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body have title 'Tokyo Ghoul'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.data.title).to.eql(\"Tokyo Ghoul\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "c02f40f3-531a-4d3b-bc0a-8723e72c632d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Fetch note by with auth and correct note id (GET) This is a positive scenerio where a user tries to get note by id with proper authentication and with correct note id after updating the note."
+					},
+					"response": []
+				}
+			],
+			"id": "709abbcb-c609-4ea6-a8b9-31e34033f5c7",
+			"description": "This is a scenerio where a user tries to fetch note by id after note is being updated."
+		},
+		{
+			"name": "Update completed status of note by id",
+			"item": [
+				{
+					"name": "update completed status of note by id without auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3e607ee1-b312-411d-b86d-88a00abbdfc4",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have message 'No authentication token specified in x-auth-token header'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"No authentication token specified in x-auth-token header\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "16305b8e-4d5b-4b5c-a9d9-47b60ac81769",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"completed\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Update 'Complete' status of note by id (PATCH): This is a negative scenerio where a user tries to apply partial modifications to the resource without proper authenticatiion."
+					},
+					"response": []
+				},
+				{
+					"name": "update completed status of note by id with invalid status value",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3e607ee1-b312-411d-b86d-88a00abbdfc4",
+								"exec": [
+									"pm.test(\"Status code is 400\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have message 'Note completed status must be boolean'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Note completed status must be boolean\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "b0fe0bf6-0161-4eed-a78f-7e0dc25f3784",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"completed\": \"notsure\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Update 'Complete' status of note by id (PATCH): This is a negative scenerio where a user tries to apply partial modifications to the resource with invalid authenticatiion token."
+					},
+					"response": []
+				},
+				{
+					"name": "update completed status of note by id with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3e607ee1-b312-411d-b86d-88a00abbdfc4",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data property have completed status 'true'\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.data.completed).to.eql(true)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "52203e07-e1c0-4a87-96eb-e0d682495aec",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"completed\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Update 'Complete' status of note by id (PATCH): This is a positive scenerio where a user tries to apply partial modifications to the resource with proper authenticatiion.\n\nHere i updated 'complete' status from false to true."
+					},
+					"response": []
+				}
+			],
+			"id": "6c08ebca-62eb-4d24-ab57-a949c2367a1b",
+			"description": "This is a scenerio where a user tries to modify 'completed' status from the note by id.\n\nIt can either be 'true' or 'false'"
+		},
+		{
+			"name": "Verify completed status of note by id after update",
+			"item": [
+				{
+					"name": "Verify completed status of note by id after update with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c9896055-f309-47dc-911f-bf2f6a011fb0",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data property have completed status 'true'\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.data.completed).to.eql(true)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "51b8d16c-08e5-4f32-af64-a7dbebd81443",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Fetch note by with auth and correct note id (GET) This is a positive scenerio where a user tries to get note by id with proper authentication and with correct note id."
+					},
+					"response": []
+				}
+			],
+			"id": "9c2d8568-9aad-48d8-a86a-b69d0a3e879d"
+		},
+		{
+			"name": "Delete note by id",
+			"item": [
+				{
+					"name": "delete note by id that doesn't exist with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4a5cc29d-2255-493b-bb10-cae911282d9e",
+								"exec": [
+									"pm.test(\"Status is 404\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(404);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'No note was found with the provided ID, Maybe it was deleted'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"No note was found with the provided ID, Maybe it was deleted\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "4c19eb53-850f-421e-8a00-5e50275471a2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "56c774cbc99d1a014d4b1983"
+								}
+							]
+						},
+						"description": "Delete note by id (DEL): This is a negative scenerio where a user tries to delete the note by id which doesn't exist with proper authentication."
+					},
+					"response": []
+				},
+				{
+					"name": "delete note by id without auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f1ca23fb-e636-4794-9db8-8928f84d7f4c",
+								"exec": [
+									"pm.test(\"Status is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'No authentication token specified in x-auth-token header'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"No authentication token specified in x-auth-token header\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "6b13c5f8-e37c-4c57-8dae-bc4eecbf196a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Delete note by id (DEL): This is a negative scenerio where a user tries to delete the note without proper authentication token but correct note id."
+					},
+					"response": []
+				},
+				{
+					"name": "delete note by id with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4a5cc29d-2255-493b-bb10-cae911282d9e",
+								"exec": [
+									"pm.test(\"Status is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'Note successfully deleted'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Note successfully deleted\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "37bb1e81-4c11-4822-b6c8-6382802aed71",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Delete note by id (DEL): This is a positive scenerio where a user tries to delete the note with proper authentication."
+					},
+					"response": []
+				},
+				{
+					"name": "delete note by id that was already deleted with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4a5cc29d-2255-493b-bb10-cae911282d9e",
+								"exec": [
+									"pm.test(\"Status is 404\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(404);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'No note was found with the provided ID, Maybe it was deleted'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"No note was found with the provided ID, Maybe it was deleted\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "72a20519-84d8-4cb9-b657-ddc1ed58186e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Delete note by id (DEL): This is a negative scenerio where a user tries to delete the note with proper authentication after deleting the note."
+					},
+					"response": []
+				}
+			],
+			"id": "dce62c7e-2b2d-4d19-bc0c-e6ebf0075979",
+			"description": "This is a scenerio where a user tries to delete the note by id."
+		},
+		{
+			"name": "GET note by id after deleting note",
+			"item": [
+				{
+					"name": "GET note by id with auth after deleting note with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9eb8bcea-3750-49d8-a933-3fe0ae9035c0",
+								"exec": [
+									"pm.test(\"Status code is 404\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(404);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'No note was found with the provided ID, Maybe it was deleted'\", function () {\r",
+									"    const responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"No note was found with the provided ID, Maybe it was deleted\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "2bf97d86-d710-439b-ac6a-07287d59c291",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{apiEndpoint}}/notes/:id",
+							"host": [
+								"{{apiEndpoint}}"
+							],
+							"path": [
+								"notes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{noteID}}"
+								}
+							]
+						},
+						"description": "Fetch note by with auth and correct note id (GET): This is a positive scenerio where a user tries to get note by id with proper authentication and with correct note id after deleting note."
+					},
+					"response": []
+				}
+			],
+			"id": "44e086f4-c45d-4b55-9792-8c65506fe0bf",
+			"description": "This is a scenerio where a user tries to fetch the note by id after deleting it."
+		},
+		{
+			"name": "Delete account",
+			"item": [
+				{
+					"name": "delete account without auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f75a22d8-493a-4742-9905-376d4bb8c2e0",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'No authentication token specified in x-auth-token header'\", function () {\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.message).to.eql(\"No authentication token specified in x-auth-token header\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "9e8e93ea-96fe-4937-bb19-85c562f16afc",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{apiEndpoint}}/users/delete-account",
+						"description": "Delete account (DEL): This is a negative scenerio where a user tries to delete the account permanently without proper authentication."
+					},
+					"response": []
+				},
+				{
+					"name": "delete account with invalid auth token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f75a22d8-493a-4742-9905-376d4bb8c2e0",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'Access token is not valid or has expired, you will need to login'\", function () {\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.message).to.eql(\"Access token is not valid or has expired, you will need to login\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "0a1f49cc-a7ac-4e76-b3bf-dff90e2b61c3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": {
+								"value": "1HG788Hg6H7B6",
+								"key": "{{tokenType}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{apiEndpoint}}/users/delete-account",
+						"description": "Delete account (DEL): This is a negative scenerio where a user tries to delete the account permanently with incorrect authentication token."
+					},
+					"response": []
+				},
+				{
+					"name": "delete account with auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a19ba776-172f-4e1c-a2db-0cb56121de96",
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response message have 'Account successfully deleted'\", function () {\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.message).to.eql(\"Account successfully deleted\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "bc0fb572-9789-4504-9bcd-b7297438b692",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{apiEndpoint}}/users/delete-account",
+						"description": "Delete account (DEL) This is a positive scenerio where a user tries to delete the account permanently with proper authentication."
+					},
+					"response": []
+				}
+			],
+			"id": "2b9839af-758d-4ca5-9c0f-46d348885bfe",
+			"description": "This is a scenerio where a user tries to delete the account permanently."
+		},
+		{
+			"name": "Login after account delete",
+			"item": [
+				{
+					"name": "Login after account delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "835c60b1-0cf3-48a2-8713-c98148455309",
+								"exec": [
+									"pm.test(\"Status code is 401\", function(){\r",
+									"    pm.expect(pm.response.code).to.be.eql(401);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response time is less than 1500ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"})\r",
+									"\r",
+									"pm.test('Response body is in JSON', function(){\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Response body have 'Incorrect email address or password'\", function () {\r",
+									"    let responseBody = pm.response.json();\r",
+									"    pm.expect(responseBody.message).to.eql(\"Incorrect email address or password\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Header Content-Type is application/json\", function () {\r",
+									"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "6eb06c65-db26-4c7d-98d5-1aa132bb6ac6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{validEmail}}\",\r\n    \"password\": \"{{newPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{apiEndpoint}}/users/login",
+						"description": "Login with new password (POST) This is a positive scenerio where a user tries to log in with new password."
+					},
+					"response": []
+				}
+			],
+			"id": "5eae781f-6286-4cb5-a7c0-75eaf5baff9f"
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": {
+			"value": "{{token}}",
+			"in": "header",
+			"key": "{{tokenType}}"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				],
+				"id": "31f2e2e4-bed9-4323-a723-e08069b4b314"
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				],
+				"id": "0cef01fa-2de1-4d3d-842e-b56cacad4a8f"
+			}
+		}
+	]
+}
