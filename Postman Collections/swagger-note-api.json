@@ -5049,6 +5049,19 @@
 				}
 			],
 			"id": "5eae781f-6286-4cb5-a7c0-75eaf5baff9f"
+		},
+		{
+			"name": "New Request",
+			"id": "25200dac-bc92-403c-8845-cfd65bdf556a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "abc"
+			},
+			"response": []
 		}
 	],
 	"auth": {
